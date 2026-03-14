@@ -1,0 +1,97 @@
+{
+    "summary": {
+        "total_project_size_gb": 1.65
+    },
+    "critical_files": {
+        "robots.txt": "Missing",
+        "sitemap.xml": "Missing",
+        "package.json": "Found",
+        "next.config.js": "Missing",
+        "nuxt.config.js": "Missing"
+    },
+    "large_assets": [
+        {
+            "file": "node_modules/@swc/core-darwin-arm64/swc.darwin-arm64.node",
+            "size_mb": 22.02
+        },
+        {
+            "file": "node_modules/prisma/libquery_engine-darwin-arm64.dylib.node",
+            "size_mb": 16.45
+        },
+        {
+            "file": "node_modules/.prisma/client/libquery_engine-darwin-arm64.dylib.node",
+            "size_mb": 16.45
+        },
+        {
+            "file": "node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib",
+            "size_mb": 15.33
+        },
+        {
+            "file": "node_modules/@prisma/engines/libquery_engine-darwin-arm64.dylib.node",
+            "size_mb": 16.45
+        },
+        {
+            "file": "node_modules/@prisma/engines/schema-engine-darwin-arm64",
+            "size_mb": 18.91
+        },
+        {
+            "file": "node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node",
+            "size_mb": 100.35
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004090.sst",
+            "size_mb": 91.88
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004097.sst",
+            "size_mb": 82.65
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004240.sst",
+            "size_mb": 71.94
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004095.sst",
+            "size_mb": 95.75
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004094.sst",
+            "size_mb": 95.77
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004080.sst",
+            "size_mb": 10.62
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004151.sst",
+            "size_mb": 11.09
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004073.sst",
+            "size_mb": 51.48
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004098.sst",
+            "size_mb": 88.8
+        },
+        {
+            "file": ".next/dev/cache/turbopack/23c464985/00004074.sst",
+            "size_mb": 54.22
+        },
+        {
+            "file": ".next/dev/server/chunks/ssr/node_modules_sanity_lib_index_6e1832b2.js.map",
+            "size_mb": 10.45
+        },
+        {
+            "file": ".next/dev/static/chunks/node_modules_sanity_lib_index_aed97678.js.map",
+            "size_mb": 10.45
+        }
+    ],
+    "structure": [
+        "messages",
+        "node_modules",
+        "prisma",
+        "public",
+        "src"
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "HomePage": {
+        "title": "Your Strategic Sourcing Partner in China",
+        "subtitle": "Specializing in supply chain management, quality control, and full outsourcing of industrial and technical products from the heart of Shanghai and across China",
+        "cta_primary": "Request a Quote",
+        "cta_secondary": "Direct WhatsApp"
+    },
+    "Navigation": {
+        "home": "Home",
+        "about": "About Us",
+        "products": "Products",
+        "services": "Services",
+        "insights": "Insights",
+        "portfolio": "Portfolio",
+        "contact": "Get a Quote",
+        "contact_page": "Contact Us",
+        "faq": "FAQ"
+    }
+}
