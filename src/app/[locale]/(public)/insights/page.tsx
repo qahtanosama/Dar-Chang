@@ -1,149 +1,99 @@
-"use client";
+export const revalidate = 60;
 
-import { useState } from "react";
-import Image from "next/image";
-import { ArrowRight, ArrowLeft } from "lucide-react";
-import { useGsapDirection } from "@/hooks/useGsapDirection";
+import { prisma } from '@/lib/prisma'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Metadata } from 'next'
+import { getSeoConfig } from '@/lib/getSeoConfig'
+import { Calendar, Tag } from 'lucide-react'
 
-const ARTICLES = [
-    {
-        id: 1,
-        title: "Navigating the New Export Regulations for Fresh Produce in 2026",
-        titleAr: "فهم لوائح التصدير الجديدة للمنتجات الطازجة في عام 2026",
-        category: "Fresh Produce",
-        categoryAr: "المنتجات الطازجة",
-        image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=2670&auto=format&fit=crop",
-        date: "March 15, 2026",
-        slug: "navigating-export-regulations-fresh-produce",
-    },
-    {
-        id: 2,
-        title: "Understanding Efficiency Classes in NEMA Standard Industrial Motors",
-        titleAr: "فهم فئات الكفاءة في المحركات الصناعية القياسية NEMA",
-        category: "Industrial Motors",
-        categoryAr: "المحركات الصناعية",
-        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2670&auto=format&fit=crop",
-        date: "February 28, 2026",
-        slug: "efficiency-classes-nema-motors",
-    },
-    {
-        id: 3,
-        title: "Cold Chain Logistics: Maintaining Quality from Vietnam to the GCC",
-        titleAr: "لوجستيات سلسلة التبريد: الحفاظ على الجودة من فيتنام إلى دول الخليج",
-        category: "Fresh Produce",
-        categoryAr: "المنتجات الطازجة",
-        image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2670&auto=format&fit=crop",
-        date: "February 10, 2026",
-        slug: "cold-chain-logistics-vietnam-gcc",
-    },
-    {
-        id: 4,
-        title: "The Future of VFD Control Panels in Heavy Machinery Operations",
-        titleAr: "مستقبل لوحات التحكم VFD في عمليات المعدات الثقيلة",
-        category: "Industrial Motors",
-        categoryAr: "المحركات الصناعية",
-        image: "https://images.unsplash.com/photo-1565514020179-026b92b2d698?q=80&w=2693&auto=format&fit=crop",
-        date: "January 22, 2026",
-        slug: "future-vfd-control-panels",
-    },
-];
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await props.params
+  const seo = await getSeoConfig('insights', locale)
+  return {
+    title: seo.metaTitle,
+    description: seo.metaDescription,
+    openGraph: { title: seo.ogTitle, description: seo.ogDescription, images: seo.ogImageUrl ? [seo.ogImageUrl] : [] },
+    twitter: { card: 'summary_large_image' as const, title: seo.ogTitle || seo.metaTitle, images: seo.ogImageUrl ? [seo.ogImageUrl] : [] },
+  }
+}
 
-export default function InsightsPage() {
-    const [activeFilter, setActiveFilter] = useState("All");
-    const { isRtl } = useGsapDirection();
+export default async function InsightsListPage(props: { params: Promise<{ locale: string }> }) {
+  const { locale } = await props.params
+  const isAr = locale === 'ar'
 
-    const filteredArticles =
-        activeFilter === "All"
-            ? ARTICLES
-            : ARTICLES.filter((article) => article.category === activeFilter);
+  // Fetch from DB; fall back to static articles if empty
+  const dbInsights = await prisma.insight.findMany({
+    where: { published: true },
+    orderBy: { publishedAt: 'desc' },
+    select: { id: true, slug: true, titleEn: true, titleAr: true, summaryEn: true, summaryAr: true, coverImage: true, category: true, publishedAt: true },
+  })
 
-    return (
-        <div className="pt-32 pb-24 min-h-screen">
-            <div className="max-w-7xl mx-auto px-6">
-                {/* Header Section */}
-                <div className="mb-16 md:mb-24 text-center md:text-start">
-                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-                        {isRtl ? "رؤى " : "Global"}<span className="text-accent-gold">{isRtl ? "عالمية" : " Insights"}</span>
-                    </h1>
-                    <p className="text-xl text-gray-400 max-w-2xl">
-                        {isRtl
-                            ? "تحليلات الخبراء، واتجاهات الصناعة، والذكاء الاستراتيجي عبر التوريد العالمي، والمعدات الثقيلة، وسلاسل التوريد الدولية."
-                            : "Expert analysis, industry trends, and strategic intelligence across global sourcing, heavy machinery, and international supply chains."}
-                    </p>
-                </div>
+  const insights = dbInsights;
 
-                {/* Filters */}
-                <div className="flex flex-wrap items-center gap-4 mb-12">
-                    {["All", "Fresh Produce", "Industrial Motors"].map((filter) => {
-                        const filterLabel = isRtl
-                            ? (filter === "All" ? "الكل" : filter === "Fresh Produce" ? "المنتجات الطازجة" : "المحركات الصناعية")
-                            : (filter === "All" ? "All Insights" : filter);
-
-                        return (
-                            <button
-                                key={filter}
-                                onClick={() => setActiveFilter(filter)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${activeFilter === filter
-                                    ? "bg-accent-gold text-white shadow-lg"
-                                    : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10"
-                                    }`}
-                            >
-                                {filterLabel}
-                            </button>
-                        );
-                    })}
-                </div>
-
-                {/* Articles Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-12">
-                    {filteredArticles.map((article) => (
-                        <article
-                            key={article.id}
-                            className="group cursor-pointer flex flex-col"
-                        >
-                            {/* Image Container */}
-                            <div className="relative w-full aspect-[16/9] mb-6 overflow-hidden rounded-2xl bg-white/5 border border-white/10">
-                                <Image
-                                    src={article.image}
-                                    alt={article.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                />
-                                <div className="absolute top-4 left-4 bg-primary-navy/90 backdrop-blur-sm px-3 py-1 rounded text-xs font-medium text-accent-gold border border-white/10">
-                                    {isRtl ? article.categoryAr : article.category}
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="flex-grow flex flex-col">
-                                <time className="text-sm text-gray-500 mb-3 block">
-                                    {article.date}
-                                </time>
-                                <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-accent-gold transition-colors">
-                                    {isRtl ? article.titleAr : article.title}
-                                </h3>
-
-                                {/* Read More Link */}
-                                <div className="mt-auto flex items-center text-accent-gold font-bold text-sm tracking-wide group-hover:underline underline-offset-4 pt-2">
-                                    {isRtl ? "اقرأ المقال" : "Read Article"}
-                                    {isRtl ? (
-                                        <ArrowLeft className="ml-2 w-4 h-4 transition-transform group-hover:-translate-x-1" />
-                                    ) : (
-                                        <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                                    )}
-                                </div>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-
-                {filteredArticles.length === 0 && (
-                    <div className="py-24 text-center text-gray-500 border border-dashed border-white/10 rounded-2xl">
-                        {isRtl ? "لم يتم العثور على مقالات لهذه الفئة." : "No articles found for this category."}
-                    </div>
-                )}
-            </div>
+  return (
+    <main className="pt-32 pb-24 min-h-screen">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="mb-16 text-center md:text-start">
+          <p className="text-accent-gold text-sm font-bold tracking-[0.2em] uppercase mb-3">
+            {isAr ? 'رؤى دار تشانغ' : 'Dar Chang Insights'}
+          </p>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+            {isAr ? 'رؤى ' : 'Global'}<span className="text-accent-gold">{isAr ? 'عالمية' : ' Insights'}</span>
+          </h1>
+          <p className="text-xl text-gray-400 max-w-2xl">
+            {isAr ? 'تحليلات الخبراء، واتجاهات الصناعة، والذكاء الاستراتيجي عبر التوريد العالمي.' : 'Expert analysis, industry trends, and strategic intelligence across global sourcing, heavy machinery, and international supply chains.'}
+          </p>
         </div>
-    );
+
+        {insights.length === 0 ? (
+          <div className="text-center py-24 text-gray-400">
+            <p className="text-lg">{isAr ? 'لا توجد مقالات منشورة حتى الآن.' : 'No insights published yet. Check back soon.'}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-12">
+            {insights.map((insight) => (
+              <Link
+                key={insight.id}
+                href={`/${locale}/insights/${insight.slug}`}
+                className="group cursor-pointer flex flex-col"
+              >
+                <div className="relative w-full aspect-[16/9] mb-6 overflow-hidden rounded-2xl bg-white/5 border border-white/10">
+                  {insight.coverImage ? (
+                    <Image src={insight.coverImage} alt={isAr ? insight.titleAr : insight.titleEn} fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 50vw" />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                      <span className="text-white/30 text-4xl font-bold">DC</span>
+                    </div>
+                  )}
+                  <div className="absolute top-4 left-4 bg-primary-navy/90 backdrop-blur-sm px-3 py-1 rounded text-xs font-medium text-accent-gold border border-white/10">
+                    <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{insight.category}</span>
+                  </div>
+                </div>
+                <div className="flex-grow flex flex-col">
+                  {insight.publishedAt && (
+                    <time className="text-sm text-gray-500 mb-3 block flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 inline" />
+                      {new Date(insight.publishedAt).toLocaleDateString(isAr ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </time>
+                  )}
+                  <h2 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-accent-gold transition-colors">
+                    {isAr ? insight.titleAr : insight.titleEn}
+                  </h2>
+                  <p className="text-gray-400 leading-relaxed mb-4 line-clamp-2">
+                    {isAr ? insight.summaryAr : insight.summaryEn}
+                  </p>
+                  <div className="mt-auto text-accent-gold font-bold text-sm tracking-wide group-hover:underline underline-offset-4">
+                    {isAr ? 'اقرأ المقال ←' : 'Read Article →'}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+  )
 }

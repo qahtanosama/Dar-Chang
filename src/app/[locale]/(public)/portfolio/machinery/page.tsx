@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import Image from 'next/image';
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
@@ -8,17 +10,30 @@ export async function generateMetadata(
   props: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const locale = (await props.params).locale;
-  if (locale === 'ar') {
-    return {
-      title: "توريد المعدات الثقيلة | حفارات وشيولات وبلدوزرات | دار تشانغ",
-      description: "نورد ونفحص أفضل معدات الحفروالبناء من Caterpillar وKomatsu وSANY و غيرها. تحقق شامل وعقود توريد معتمدة.",
-      keywords: ["توريد معدات ثقيلة", "حفارات", "بلدوزرات", "شيولات", "صينية"],
-    };
-  }
+  const BASE = 'https://www.darchangglobal.com'
+  const isAr = locale === 'ar'
+  const title = isAr
+    ? "توريد المعدات الثقيلة | حفارات وشيولات وبلدوزرات | دار تشانغ"
+    : "Heavy Machinery Sourcing | Excavators, Bulldozers & Loaders | Dar Chang"
+  const description = isAr
+    ? "نورد ونفحص أفضل معدات الحفروالبناء من Caterpillar وKomatsu وSANY و غيرها. تحقق شامل وعقود توريد معتمدة."
+    : "We source and inspect top-brand heavy machinery from Caterpillar, Komatsu, SANY and more. Full pre-shipment verification and signed sourcing contracts."
   return {
-    title: "Heavy Machinery Sourcing | Excavators, Bulldozers & Loaders | Dar Chang",
-    description: "We source and inspect top-brand heavy machinery from Caterpillar, Komatsu, SANY and more. Full pre-shipment verification and signed sourcing contracts.",
-    keywords: ["heavy machinery China", "excavator sourcing", "bulldozer supplier", "wheel loader", "Caterpillar China", "Komatsu sourcing"],
+    title,
+    description,
+    keywords: isAr
+      ? ["توريد معدات ثقيلة", "حفارات", "بلدوزرات", "شيولات", "صينية"]
+      : ["heavy machinery China", "excavator sourcing", "bulldozer supplier", "wheel loader", "Caterpillar China", "Komatsu sourcing"],
+    openGraph: {
+      title,
+      description,
+      url: `${BASE}/${isAr ? 'ar' : 'en'}/portfolio/machinery`,
+      siteName: isAr ? 'دار تشانغ العالمية' : 'Dar Chang Global',
+      locale: isAr ? 'ar_SA' : 'en_US',
+      type: 'website',
+      images: [{ url: `${BASE}/hero-poster.png`, width: 1200, height: 630, alt: isAr ? 'معدات ثقيلة — دار تشانغ' : 'Heavy Machinery — Dar Chang' }],
+    },
+    twitter: { card: 'summary_large_image' as const, title, images: [`${BASE}/hero-poster.png`] },
   };
 }
 
@@ -151,7 +166,7 @@ export default function MachineryPage() {
             <div className="mt-20 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
               <p className="text-text-main font-semibold">Ready to source heavy machinery for your next project?</p>
               <Link
-                href="/quote"
+                href="/quote?type=machinery"
                 className="btn-primary"
               >
                 Request a Machinery Quote
@@ -269,7 +284,7 @@ export default function MachineryPage() {
             <div className="mt-20 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
               <p className="text-text-main font-semibold">جاهز لتوريد المعدات الثقيلة لمشروعك القادم؟</p>
               <Link
-                href="/quote"
+                href="/quote?type=machinery"
                 className="btn-primary"
               >
                 طلب عرض سعر

@@ -3,7 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom'
 import { login } from './actions'
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 
 function SubmitButton() {
     const { pending } = useFormStatus()
@@ -21,12 +21,14 @@ function SubmitButton() {
 export default function LoginPage() {
     const [state, formAction] = useFormState(login, null)
     const router = useRouter()
+    const params = useParams()
+    const locale = (params.locale as string) ?? 'en'
 
     useEffect(() => {
         if (state?.success) {
-            window.location.href = '/en/admin' // Force full reload to update middleware
+            window.location.href = `/${locale}/admin` // Force full reload to update middleware
         }
-    }, [state, router])
+    }, [state, router, locale])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

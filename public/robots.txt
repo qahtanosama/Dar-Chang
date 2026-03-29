@@ -1,9 +1,11 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 # Host
-Host: https://www.darchang.com
+Host: https://www.darchangglobal.com
 
 # Sitemaps
-Sitemap: https://www.darchang.com/sitemap.xml
+Sitemap: https://www.darchangglobal.com/sitemap.xml

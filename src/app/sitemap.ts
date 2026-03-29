@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
+import { prisma } from '@/lib/prisma';
 
-const BASE_URL = 'https://www.darchang.com';
+const BASE_URL = 'https://www.darchangglobal.com';
 const locales = ['en', 'ar'];
 
-// All public routes (excluding /admin and /api)
+// All public static routes (excluding /admin and /api)
 const staticRoutes = [
     { path: '', priority: 1.0, changeFrequency: 'weekly' as const },
     { path: '/about', priority: 0.8, changeFrequency: 'monthly' as const },
@@ -25,10 +26,10 @@ const staticRoutes = [
     { path: '/industrial-avocado-oil-lines', priority: 0.8, changeFrequency: 'monthly' as const },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const lastModified = new Date();
 
-    return staticRoutes.flatMap(({ path, priority, changeFrequency }) =>
+    const staticEntries = staticRoutes.flatMap(({ path, priority, changeFrequency }) =>
         locales.map((locale) => ({
             url: `${BASE_URL}/${locale}${path}`,
             lastModified,
@@ -36,4 +37,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority,
         }))
     );
+
+    // Dynamic: published insights
+    let insightEntries: MetadataRoute.Sitemap = [];
+    try {
+        const insights = await prisma.insight.findMany({
+            where: { published: true },
+            select: { slug: true, publishedAt: true },
+        });
+        insightEntries = insights.flatMap((insight) =>
+            locales.map((locale) => ({
+                url: `${BASE_URL}/${locale}/insights/${insight.slug}`,
+                lastModified: insight.publishedAt ?? lastModified,
+                changeFrequency: 'monthly' as const,
+                priority: 0.7,
+            }))
+        );
+    } catch {}
+
+    // Dynamic: machinery categories (static slugs matching /public/portfolio/machinery/)
+    const machinerySlugs = ['excavators', 'bulldozers', 'wheel-loaders', 'backhoe-loaders', 'motor-graders'];
+    const machineryEntries: MetadataRoute.Sitemap = machinerySlugs.flatMap((slug) =>
+        locales.map((locale) => ({
+            url: `${BASE_URL}/${locale}/portfolio/machinery/${slug}`,
+            lastModified,
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        }))
+    );
+
+    return [...staticEntries, ...insightEntries, ...machineryEntries];
 }

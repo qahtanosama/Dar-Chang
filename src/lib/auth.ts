@@ -2,7 +2,10 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-const secretKey = process.env.JWT_SECRET || 'dar-chang-super-secret-key-replace-in-production'
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is missing from environment variables");
+}
+const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: import('jose').JWTPayload) {

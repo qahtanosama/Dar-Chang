@@ -6,6 +6,14 @@ const withNextIntl = createNextIntlPlugin(
 );
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+  // Disable the client-side Router Cache for dynamic routes so CMS changes
+  // appear immediately on the next navigation without waiting 30 seconds.
+  experimental: {
+    staleTimes: {
+      dynamic: 0,
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -13,6 +21,19 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
+        ],
+      },
+    ];
   },
 };
 

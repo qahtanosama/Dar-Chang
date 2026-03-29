@@ -8,18 +8,30 @@ export async function generateMetadata(
     const params = await props.params;
     const locale = params.locale;
 
-    if (locale === "ar") {
-        return {
-            title: "خطوط إنتاج زيت الأفوكادو: حلول صناعية متكاملة | توريد مصانع",
-            description: "حلول متكاملة لاستخلاص زيت الأفوكادو البكر الممتاز. طاقة إنتاجية 500 كجم/ساعة، تقنيات عصر بارد حاصلة على براءة اختراع، وأنظمة تحكم عالمية.",
-            keywords: ["خط إنتاج زيت أفوكادو", "استخلاص زيت الأفوكادو", "عصر بارد", "معدات زيت طعام", "توريد مصانع الصين", "زيت أفوكادو بكر ممتاز", "تقنية الأمواج فوق الصوتية"],
-        };
-    }
-
+    const BASE = 'https://www.darchangglobal.com'
+    const isAr = locale === "ar"
+    const title = isAr
+        ? "خطوط إنتاج زيت الأفوكادو: حلول صناعية متكاملة | توريد مصانع"
+        : "Extra Virgin Avocado Oil Extraction Lines | Global Sourcing"
+    const description = isAr
+        ? "حلول متكاملة لاستخلاص زيت الأفوكادو البكر الممتاز. طاقة إنتاجية 500 كجم/ساعة، تقنيات عصر بارد حاصلة على براءة اختراع، وأنظمة تحكم عالمية."
+        : "End-to-end patented avocado oil extraction solutions. 500kg/h capacity, precision cold-press technology, and food grade 304 SS."
     return {
-        title: "Extra Virgin Avocado Oil Extraction Lines | Global Sourcing",
-        description: "End-to-end patented avocado oil extraction solutions. 500kg/h capacity, precision cold-press technology, and food grade 304 SS.",
-        keywords: ["Avocado oil processing line", "extra virgin avocado oil", "cold press extraction", "food-grade machinery", "China sourcing", "avocado oil decanter", "ultrasonic extraction"],
+        title,
+        description,
+        keywords: isAr
+            ? ["خط إنتاج زيت أفوكادو", "استخلاص زيت الأفوكادو", "عصر بارد", "معدات زيت طعام", "توريد مصانع الصين", "زيت أفوكادو بكر ممتاز", "تقنية الأمواج فوق الصوتية"]
+            : ["Avocado oil processing line", "extra virgin avocado oil", "cold press extraction", "food-grade machinery", "China sourcing", "avocado oil decanter", "ultrasonic extraction"],
+        openGraph: {
+            title,
+            description,
+            url: `${BASE}/${isAr ? 'ar' : 'en'}/industrial-avocado-oil-lines`,
+            siteName: isAr ? 'دار تشانغ العالمية' : 'Dar Chang Global',
+            locale: isAr ? 'ar_SA' : 'en_US',
+            type: 'website',
+            images: [{ url: `${BASE}/hero-poster.png`, width: 1200, height: 630, alt: isAr ? 'خطوط زيت الأفوكادو — دار تشانغ' : 'Avocado Oil Lines — Dar Chang' }],
+        },
+        twitter: { card: 'summary_large_image' as const, title, images: [`${BASE}/hero-poster.png`] },
     };
 }
 
@@ -245,7 +257,7 @@ export default async function IndustrialAvocadoOilLinesPage(props: { params: Pro
 
                 <div className="mt-16 flex justify-center">
                     <Link
-                        href="/quote"
+                        href="/quote?type=production_line"
                         className="bg-accent-gold text-primary-navy px-10 py-5 rounded-full font-bold text-lg hover:bg-white shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1"
                         dir={isRtl ? "rtl" : "ltr"}
                     >

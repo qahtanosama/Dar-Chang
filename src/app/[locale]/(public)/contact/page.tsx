@@ -16,7 +16,7 @@ export async function generateMetadata(
       openGraph: {
         title: 'اتصل بنا - التوريد والتمثيل التجاري العالمي | دار تشانغ',
         description: 'نحن نوفر جسراً مهنياً يربط بين الطلب العالمي ومراكز التصنيع الصينية، مع مكاتب إقليمية في شنغهاي، مكة المكرمة، ودبي.',
-        url: 'https://www.darchang.com/ar/contact',
+        url: 'https://www.darchangglobal.com/ar/contact',
         siteName: 'Dar Chang | دار تشانغ',
         locale: 'ar_AE',
         type: 'website',
@@ -37,7 +37,7 @@ export async function generateMetadata(
     openGraph: {
       title: 'Contact Us - Global Trade & Sourcing | Dar Chang',
       description: 'We provide a professional bridge between global demand and Chinese manufacturing, with regional hubs in Shanghai, Makkah, and Dubai.',
-      url: 'https://www.darchang.com/en/contact',
+      url: 'https://www.darchangglobal.com/en/contact',
       siteName: 'Dar Chang | دار تشانغ',
       locale: 'en_US',
       type: 'website',

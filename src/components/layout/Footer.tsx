@@ -4,7 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { MapPin, Phone, Clock, ChevronDown, Linkedin, Twitter, Facebook, Instagram, ShieldCheck, Globe, MessageSquarePlus } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
+
 
 const MobileAccordion = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,10 +29,44 @@ const MobileAccordion = ({ title, children }: { title: string, children: React.R
   );
 };
 
-export function Footer() {
+interface FooterProps {
+  footerLogoUrl?: string | null;
+  footerText?: string | null;
+  googleMyBusinessUrl?: string | null;
+  socialLinkedIn?: string | null;
+  socialTwitter?: string | null;
+  socialFacebook?: string | null;
+  socialInstagram?: string | null;
+  socialWhatsApp?: string | null;
+  socialYoutube?: string | null;
+}
+
+// Hardcoded fallbacks — used when Site Settings DB field is empty
+const SOCIAL_DEFAULTS = {
+  linkedin:  'https://linkedin.com/company/darchang',
+  twitter:   'https://twitter.com/darchang',
+  facebook:  'https://facebook.com/darchang.consulting',
+  instagram: 'https://instagram.com/darchang.global',
+  whatsapp:  'https://wa.me/8618721160270',
+}
+
+export function Footer({
+  footerLogoUrl, footerText, googleMyBusinessUrl,
+  socialLinkedIn, socialTwitter, socialFacebook,
+  socialInstagram, socialWhatsApp, socialYoutube,
+}: FooterProps) {
   const t = useTranslations("Navigation");
   const locale = useLocale();
   const isRtl = locale === "ar";
+
+  // Resolve URLs: DB value takes priority, fallback to hardcoded defaults
+  const links = {
+    linkedin:  socialLinkedIn  || SOCIAL_DEFAULTS.linkedin,
+    twitter:   socialTwitter   || SOCIAL_DEFAULTS.twitter,
+    facebook:  socialFacebook  || SOCIAL_DEFAULTS.facebook,
+    instagram: socialInstagram || SOCIAL_DEFAULTS.instagram,
+    whatsapp:  socialWhatsApp  || SOCIAL_DEFAULTS.whatsapp,
+  }
 
   const currentYear = new Date().getFullYear();
 
@@ -45,34 +79,35 @@ export function Footer() {
 
           {/* Brand Intro (Top on mobile, left on desktop) */}
           <div className="col-span-1 md:col-span-4 lg:col-span-2 mb-8 md:mb-0 pb-10 md:pb-0 border-b border-white/10 md:border-none flex flex-col items-center md:items-start text-center md:text-start">
-            <Link href="/" className="relative flex items-center justify-center md:justify-start h-20 w-64 mb-8">
-              <Image
-                src="/logo.svg"
-                alt="Dar Chang Logo - دار تشانغ"
-                fill
-                priority
-                className={`object-contain ${isRtl ? 'md:object-right' : 'md:object-left'} object-center`}
-              />
+            <Link href="/" className="flex items-center justify-center md:justify-start mb-8 gap-3" aria-label="Dar Chang Global">
+              {footerLogoUrl ? (
+                <img src={footerLogoUrl} alt="Dar Chang Global" className="h-10 object-contain" />
+              ) : (
+                <span className="text-2xl tracking-tighter uppercase">
+                  <span className="font-bold text-white">Dar Chang</span>
+                  <span className="font-light text-accent-gold"> Global</span>
+                </span>
+              )}
             </Link>
             <p className="text-base text-gray-300 mb-8 max-w-sm leading-relaxed">
               <span className="block mb-2 font-bold text-accent-gold tracking-wide">{isRtl ? "مكتبك في الصين" : "Your Office in China"}</span>
-              {isRtl
+              {footerText || (isRtl
                 ? "توريد بلا قلق، نتائج بلا حدود. نحن نوفر أحدث المعدات الثقيلة وعمليات التصنيع المخصصة."
-                : "Sourcing Without Worry, Results Without Borders. Leading industrial equipment and custom manufacturing procurement."}
+                : "Sourcing Without Worry, Results Without Borders. Leading industrial equipment and custom manufacturing procurement.")}
             </p>
 
-            {/* SEO Optimized Social Links */}
+            {/* SEO Optimised Social Links */}
             <div className="flex items-center justify-center md:justify-start gap-6 w-full mb-4 md:mb-0">
-              <a href="https://linkedin.com/company/darchang" target="_blank" rel="noopener noreferrer" aria-label="Dar Chang LinkedIn Professional Profile" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
+              <a href={links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Dar Chang LinkedIn Professional Profile" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
                 <Linkedin className="w-5 h-5 fill-current" />
               </a>
-              <a href="https://twitter.com/darchang" target="_blank" rel="noopener noreferrer" aria-label="Dar Chang X Twitter Corporate Updates" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
+              <a href={links.twitter} target="_blank" rel="noopener noreferrer" aria-label="Dar Chang X Twitter Corporate Updates" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
                 <Twitter className="w-5 h-5 fill-current" />
               </a>
-              <a href="https://facebook.com/darchang.consulting" target="_blank" rel="noopener noreferrer" aria-label="Dar Chang Facebook Global Community" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
+              <a href={links.facebook} target="_blank" rel="noopener noreferrer" aria-label="Dar Chang Facebook Global Community" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
                 <Facebook className="w-5 h-5 fill-current" />
               </a>
-              <a href="https://instagram.com/darchang.global" target="_blank" rel="noopener noreferrer" aria-label="Dar Chang Instagram Logistics Visuals" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
+              <a href={links.instagram} target="_blank" rel="noopener noreferrer" aria-label="Dar Chang Instagram Logistics Visuals" className="text-white/80 hover:text-accent-gold transition-colors p-2.5 hover:bg-white/10 rounded-full bg-white/5">
                 <Instagram className="w-5 h-5" />
               </a>
             </div>
@@ -180,15 +215,20 @@ export function Footer() {
           </p>
           
           <div className="flex items-center justify-center gap-4">
-            <a href="https://wa.me/8618721160270" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
+            <a href={links.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
               <Phone className="w-5 h-5 fill-current" />
             </a>
-            <a href="https://facebook.com/darchang.consulting" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
+            <a href={links.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
               <Facebook className="w-5 h-5 fill-current" />
             </a>
-            <a href="https://instagram.com/darchang.global" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
+            <a href={links.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
               <Instagram className="w-5 h-5" />
             </a>
+            {googleMyBusinessUrl && (
+              <a href={googleMyBusinessUrl} target="_blank" rel="noopener noreferrer" aria-label="Google My Business" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
+                <MapPin className="w-5 h-5" />
+              </a>
+            )}
             <Link href="/quote" aria-label="Get a Quote" className="w-11 h-11 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 hover:bg-gray-50 transition-colors shadow-sm">
               <MessageSquarePlus className="w-5 h-5" />
             </Link>

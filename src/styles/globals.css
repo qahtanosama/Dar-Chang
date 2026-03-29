@@ -187,6 +187,248 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* ── Tiptap WYSIWYG Editor Styles ───────────────────────────────────────── */
+
+/* Editor canvas */
+.tiptap-editor {
+  padding: 1.25rem 1.5rem;
+  outline: none;
+  min-height: inherit;
+  color: #1e293b; /* slate-800 */
+  font-family: var(--font-english), sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+/* Placeholder */
+.tiptap-editor p.is-editor-empty:first-child::before {
+  color: #94a3b8; /* slate-400 */
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Headings */
+.tiptap-editor h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  line-height: 1.3;
+}
+.tiptap-editor h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #334155;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+/* Paragraphs */
+.tiptap-editor p {
+  margin-bottom: 0.875rem;
+}
+
+/* Bold / Italic */
+.tiptap-editor strong { font-weight: 700; color: #0f172a; }
+.tiptap-editor em { font-style: italic; }
+.tiptap-editor s { text-decoration: line-through; }
+
+/* Inline code */
+.tiptap-editor code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85em;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  color: #475569;
+}
+
+/* Code block */
+.tiptap-editor pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.tiptap-editor pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.875rem;
+}
+
+/* Lists */
+.tiptap-editor ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.875rem;
+}
+.tiptap-editor ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 0.875rem;
+}
+.tiptap-editor li { margin-bottom: 0.25rem; }
+
+/* Blockquote */
+.tiptap-editor blockquote {
+  border-left: 3px solid #C5A059;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #64748b;
+  font-style: italic;
+  background: #fafaf8;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Horizontal rule */
+.tiptap-editor hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+/* Links */
+.tiptap-editor a.tiptap-link,
+.tiptap-editor a[href] {
+  color: #C5A059;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.tiptap-editor a.tiptap-link:hover,
+.tiptap-editor a[href]:hover { color: #1A1A40; }
+
+/* Images */
+.tiptap-editor img.tiptap-image,
+.tiptap-editor img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  margin: 0.75rem 0;
+  display: block;
+}
+.tiptap-editor img.ProseMirror-selectednode {
+  outline: 2px solid #1A1A40;
+  outline-offset: 2px;
+}
+
+/* Tables */
+.tiptap-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+.tiptap-editor thead tr { background: #1A1A40; color: #fff; }
+.tiptap-editor th {
+  padding: 0.625rem 0.875rem;
+  font-weight: 600;
+  text-align: left;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+.tiptap-editor td {
+  padding: 0.5rem 0.875rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+.tiptap-editor tbody tr:last-child td { border-bottom: none; }
+.tiptap-editor tbody tr:hover { background: #f8fafc; }
+.tiptap-editor .selectedCell { background: #dbeafe; }
+
+/* RTL support */
+.tiptap-editor[dir="rtl"] {
+  font-family: var(--font-arabic), sans-serif;
+  text-align: right;
+}
+.tiptap-editor[dir="rtl"] blockquote {
+  border-left: none;
+  border-right: 3px solid #C5A059;
+  padding-left: 0;
+  padding-right: 1rem;
+  border-radius: 4px 0 0 4px;
+}
+.tiptap-editor[dir="rtl"] ul,
+.tiptap-editor[dir="rtl"] ol {
+  padding-left: 0;
+  padding-right: 1.5rem;
+}
+.tiptap-editor[dir="rtl"] th { text-align: right; }
+
+/* Wrapper focus ring handled by focus-within in Tailwind class */
+
+/* ── Public Insight Article Prose (HTML from Tiptap editor) ─────────────── */
+.insight-prose { font-size: 1.0625rem; line-height: 1.8; color: #333333; }
+.insight-prose h2 {
+  font-size: 1.5rem; font-weight: 700; color: #1A1A40;
+  margin-top: 2.5rem; margin-bottom: 1rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid #E0E0E0;
+}
+.insight-prose h3 {
+  font-size: 1.2rem; font-weight: 700; color: #1A1A40;
+  margin-top: 2rem; margin-bottom: 0.75rem;
+}
+.insight-prose p { margin-bottom: 1.125rem; }
+.insight-prose strong { font-weight: 700; color: #1A1A40; }
+.insight-prose em { font-style: italic; }
+.insight-prose ul { list-style-type: disc; padding-left: 1.75rem; margin-bottom: 1rem; }
+.insight-prose ol { list-style-type: decimal; padding-left: 1.75rem; margin-bottom: 1rem; }
+.insight-prose li { margin-bottom: 0.375rem; }
+.insight-prose blockquote {
+  border-left: 4px solid #C5A059; padding: 1rem 1.5rem;
+  background: #F8F9FA; border-radius: 0 8px 8px 0;
+  color: #555; font-style: italic; margin: 1.5rem 0;
+}
+.insight-prose a { color: #C5A059; text-decoration: underline; text-underline-offset: 3px; }
+.insight-prose a:hover { color: #1A1A40; }
+.insight-prose img {
+  max-width: 100%; border-radius: 12px;
+  border: 1px solid #E0E0E0; margin: 1.25rem auto; display: block;
+}
+.insight-prose table {
+  width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+  border-radius: 10px; overflow: hidden; border: 1px solid #E0E0E0; font-size: 0.9rem;
+}
+.insight-prose thead tr { background: #1A1A40; color: #fff; }
+.insight-prose th { padding: 0.75rem 1rem; font-weight: 600; text-align: left; }
+.insight-prose td { padding: 0.625rem 1rem; border-bottom: 1px solid #E0E0E0; }
+.insight-prose tbody tr:last-child td { border-bottom: none; }
+.insight-prose tbody tr:hover { background: #F8F9FA; }
+.insight-prose hr { border: none; border-top: 1px solid #E0E0E0; margin: 2rem 0; }
+.insight-prose code {
+  font-family: ui-monospace, monospace; font-size: 0.85em;
+  background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px; padding: 0.15em 0.4em;
+}
+.insight-prose pre {
+  background: #1e293b; color: #e2e8f0; border-radius: 8px;
+  padding: 1rem 1.25rem; overflow-x: auto; margin: 1rem 0;
+}
+.insight-prose pre code { background: none; border: none; padding: 0; }
+
+/* RTL overrides for Arabic insight prose */
+[dir="rtl"] .insight-prose th { text-align: right; }
+[dir="rtl"] .insight-prose blockquote {
+  border-left: none; border-right: 4px solid #C5A059;
+  border-radius: 8px 0 0 8px;
+}
+[dir="rtl"] .insight-prose ul,
+[dir="rtl"] .insight-prose ol { padding-left: 0; padding-right: 1.75rem; }
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

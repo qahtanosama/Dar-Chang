@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { Menu, X, Globe, Phone, Home, Info, Wrench, Briefcase, FileText, ShieldCheck, MessageSquarePlus } from "lucide-react";
-import Image from "next/image";
+import { Menu, X, Globe, Phone, Home, Info, Wrench, Briefcase, FileText, ShieldCheck, MessageSquarePlus, Mail } from "lucide-react";
+
 import { useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
@@ -13,7 +13,7 @@ import { useGsapDirection } from "@/hooks/useGsapDirection";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function Navbar() {
+export function Navbar({ logoUrl }: { logoUrl?: string | null }) {
     const t = useTranslations("Navigation");
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
@@ -71,14 +71,15 @@ export function Navbar() {
             {/* Desktop Navigation (Hidden on mobile) */}
             <nav ref={navRef} className="desktop-nav fixed top-0 w-full z-50 hidden md:block glass-nav">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/" className="relative flex items-center h-12 w-48 group">
-                        <Image
-                            src="/logo.svg"
-                            alt="Dar Chang Logo - دار تشانغ"
-                            fill
-                            priority
-                            className={`object-contain ${isRtl ? 'object-right' : 'object-left'}`}
-                        />
+                    <Link href="/" className="flex items-center group gap-3" aria-label="Dar Chang Global">
+                        {logoUrl ? (
+                            <img src={logoUrl} alt="Dar Chang Global" className="h-8 object-contain" />
+                        ) : (
+                            <span className="text-xl tracking-tighter uppercase">
+                                <span className="font-bold text-white">Dar Chang</span>
+                                <span className="font-light text-accent-gold"> Global</span>
+                            </span>
+                        )}
                     </Link>
 
                     <div className="flex items-center gap-8">
@@ -126,14 +127,15 @@ export function Navbar() {
                 }}
             >
                 {/* Brand Logo */}
-                <Link href="/" className="relative flex items-center h-10 w-36">
-                    <Image
-                        src="/logo.svg"
-                        alt="Dar Chang Logo"
-                        fill
-                        className={`object-contain ${isRtl ? 'object-right' : 'object-left'}`}
-                        priority
-                    />
+                <Link href="/" className="flex items-center gap-3" aria-label="Dar Chang Global">
+                    {logoUrl ? (
+                        <img src={logoUrl} alt="Dar Chang Global" className="h-6 object-contain" />
+                    ) : (
+                        <span className="text-lg tracking-tighter uppercase">
+                            <span className="font-bold text-white">Dar Chang</span>
+                            <span className="font-light text-accent-gold"> Global</span>
+                        </span>
+                    )}
                 </Link>
 
                 {/* Right side Actions */}
@@ -171,7 +173,7 @@ export function Navbar() {
                     className="w-12 h-12 flex items-center justify-center bg-white border border-gray-200/50 rounded-full text-gray-900 active:scale-95 transition-transform shadow-sm"
                     aria-label="Contact Us"
                 >
-                    <Globe className="w-5 h-5" />
+                    <Mail className="w-5 h-5" />
                 </Link>
             </nav>
 
@@ -189,13 +191,15 @@ export function Navbar() {
 
                         {/* Header */}
                         <div className="flex flex-col items-center justify-center pt-12 pb-8 px-6 border-b border-white/5 shrink-0">
-                            <div className="relative w-40 h-10 mb-4">
-                                <Image
-                                    src="/logo.svg"
-                                    alt="Dar Chang Logo"
-                                    fill
-                                    className="object-contain"
-                                />
+                            <div className="mb-4 flex justify-center items-center">
+                                {logoUrl ? (
+                                    <img src={logoUrl} alt="Dar Chang Global" className="h-10 object-contain" />
+                                ) : (
+                                    <span className="text-xl tracking-tighter uppercase">
+                                        <span className="font-bold text-white">Dar Chang</span>
+                                        <span className="font-light text-accent-gold"> Global</span>
+                                    </span>
+                                )}
                             </div>
                             <span className="text-accent-gold text-xs tracking-[0.2em] uppercase font-medium text-center">
                                 {isRtl ? "مكتبك في الصين" : "Your Office in China"}

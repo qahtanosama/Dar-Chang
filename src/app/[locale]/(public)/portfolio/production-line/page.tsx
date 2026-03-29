@@ -7,17 +7,30 @@ export async function generateMetadata(
     props: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
     const locale = (await props.params).locale;
-    if (locale === 'ar') {
-        return {
-            title: "خطوط الإنتاج الصناعية | فرز التمور، الأفوكادو، زيت الأفوكادو | دار تشانغ",
-            description: "نوفر خطوط إنتاج متكاملة لفرز التمور، معالجة الفاكهة الطازجة، واستخلاص زيت الأفوكادو بتقنية العصر البارد.",
-            keywords: ["خطوط إنتاج", "فرز التمور", "معالجة الأفوكادو", "زيت أفوكادو بكر", "آلات فرز ثمار"],
-        };
-    }
+    const BASE = 'https://www.darchangglobal.com'
+    const isAr = locale === 'ar'
+    const title = isAr
+        ? "خطوط الإنتاج الصناعية | فرز التمور، الأفوكادو، زيت الأفوكادو | دار تشانغ"
+        : "Industrial Production Lines | Date Grading, Avocado Oil & Sorting | Dar Chang"
+    const description = isAr
+        ? "نوفر خطوط إنتاج متكاملة لفرز التمور، معالجة الفاكهة الطازجة، واستخلاص زيت الأفوكادو بتقنية العصر البارد."
+        : "End-to-end industrial processing systems: automated date grading (3T/H), avocado fruit sorting, and patented extra virgin avocado oil extraction (CPAO-500)."
     return {
-        title: "Industrial Production Lines | Date Grading, Avocado Oil & Sorting | Dar Chang",
-        description: "End-to-end industrial processing systems: automated date grading (3T/H), avocado fruit sorting, and patented extra virgin avocado oil extraction (CPAO-500).",
-        keywords: ["production lines China", "date processing machine", "avocado sorting line", "avocado oil extraction", "industrial grading system"],
+        title,
+        description,
+        keywords: isAr
+            ? ["خطوط إنتاج", "فرز التمور", "معالجة الأفوكادو", "زيت أفوكادو بكر", "آلات فرز ثمار"]
+            : ["production lines China", "date processing machine", "avocado sorting line", "avocado oil extraction", "industrial grading system"],
+        openGraph: {
+            title,
+            description,
+            url: `${BASE}/${isAr ? 'ar' : 'en'}/portfolio/production-line`,
+            siteName: isAr ? 'دار تشانغ العالمية' : 'Dar Chang Global',
+            locale: isAr ? 'ar_SA' : 'en_US',
+            type: 'website',
+            images: [{ url: `${BASE}/hero-poster.png`, width: 1200, height: 630, alt: isAr ? 'خطوط الإنتاج — دار تشانغ' : 'Production Lines — Dar Chang' }],
+        },
+        twitter: { card: 'summary_large_image' as const, title, images: [`${BASE}/hero-poster.png`] },
     };
 }
 
@@ -80,7 +93,7 @@ export default function ProductionLinePage() {
                                     {isRtl ? "نظام معالجة وفرز التمور الصناعي المتطور" : "Industrial Date Processing & Automated Grading"}
                                 </h3>
                                 <p className="text-text-main text-sm text-center flex-grow mb-8 leading-relaxed max-w-xs">
-                                    {isRtl ? "إنتاجية ضخمة تصل إلى 3 طن/ساعة مع خيارات فرز الذكاء الاصطناعي לلتمور الفاخرة." : "High-capacity systems up to 3 Tons/Hour with optional AI grading for premium dates."}
+                                    {isRtl ? "إنتاجية ضخمة تصل إلى 3 طن/ساعة مع خيارات فرز الذكاء الاصطناعي للتمور الفاخرة." : "High-capacity systems up to 3 Tons/Hour with optional AI grading for premium dates."}
                                 </p>
                                 <div className="mt-auto flex items-center justify-center text-accent-gold font-bold text-sm gap-2">
                                     {isRtl ? "عرض التفاصيل" : "View Details"}
@@ -111,7 +124,7 @@ export default function ProductionLinePage() {
                             {isRtl ? "هل تحتاج إلى خط إنتاج مخصص لمنشأتك؟" : "Need a custom production line for your facility?"}
                         </p>
                         <Link
-                            href="/quote"
+                            href="/quote?type=production_line"
                             className="bg-accent-gold text-primary-navy px-8 py-4 rounded-full font-bold text-center hover:bg-white border-2 border-transparent transition-colors shadow-lg"
                         >
                             {isRtl ? "طلب استشارة هندسية" : "Request Engineering Consultation"}

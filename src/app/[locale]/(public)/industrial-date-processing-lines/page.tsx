@@ -8,18 +8,30 @@ export async function generateMetadata(
     const params = await props.params;
     const locale = params.locale;
 
-    if (locale === "ar") {
-        return {
-            title: "نظام معالجة وفرز التمور الصناعي المتطور | معدات تصدير التمور",
-            description: "نظام متكامل لمعالجة وفرز التمور بالذكاء الاصطناعي وبطاقة إنتاجية 2.5-3.0 طن/ساعة. مكونات ألمانية وفرنسية (Siemens & Schneider) لضمان جودة التصدير العالمي.",
-            keywords: ["خط معالجة تمور", "ماكينات فرز الذكاء الاصطناعي", "فرز التمور", "معدات تعبئة تمور", "فرز آلي", "توريد مصانع الصين", "تصدير التمور السعودية"],
-        };
-    }
-
+    const BASE = 'https://www.darchangglobal.com'
+    const isAr = locale === "ar"
+    const title = isAr
+        ? "نظام معالجة وفرز التمور الصناعي المتطور | معدات تصدير التمور"
+        : "Industrial Date Processing & Automated Grading | Global Sourcing"
+    const description = isAr
+        ? "نظام متكامل لمعالجة وفرز التمور بالذكاء الاصطناعي وبطاقة إنتاجية 2.5-3.0 طن/ساعة. مكونات ألمانية وفرنسية (Siemens & Schneider) لضمان جودة التصدير العالمي."
+        : "End-to-end industrial date processing and AI grading systems. 2.5–3.0 Tons/Hour with Siemens & Schneider electronics for global premium export standards."
     return {
-        title: "Industrial Date Processing & Automated Grading | Global Sourcing",
-        description: "End-to-end industrial date processing and AI grading systems. 2.5–3.0 Tons/Hour with Siemens & Schneider electronics for global premium export standards.",
-        keywords: ["Date processing line", "AI fruit sorting machinery", "automated date grading", "food-grade packaging", "Medjool processing", "Sukkari sorting", "premium export packaging"],
+        title,
+        description,
+        keywords: isAr
+            ? ["خط معالجة تمور", "ماكينات فرز الذكاء الاصطناعي", "فرز التمور", "معدات تعبئة تمور", "فرز آلي", "توريد مصانع الصين", "تصدير التمور السعودية"]
+            : ["Date processing line", "AI fruit sorting machinery", "automated date grading", "food-grade packaging", "Medjool processing", "Sukkari sorting", "premium export packaging"],
+        openGraph: {
+            title,
+            description,
+            url: `${BASE}/${isAr ? 'ar' : 'en'}/industrial-date-processing-lines`,
+            siteName: isAr ? 'دار تشانغ العالمية' : 'Dar Chang Global',
+            locale: isAr ? 'ar_SA' : 'en_US',
+            type: 'website',
+            images: [{ url: `${BASE}/hero-poster.png`, width: 1200, height: 630, alt: isAr ? 'خطوط معالجة التمور — دار تشانغ' : 'Date Processing Lines — Dar Chang' }],
+        },
+        twitter: { card: 'summary_large_image' as const, title, images: [`${BASE}/hero-poster.png`] },
     };
 }
 
@@ -267,7 +279,7 @@ export default async function IndustrialDateProcessingPage(props: { params: Prom
 
                 <div className="mt-16 flex justify-center">
                     <Link
-                        href="/quote"
+                        href="/quote?type=production_line"
                         className="bg-accent-gold text-primary-navy px-10 py-5 rounded-full font-bold text-lg hover:bg-white shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1"
                         dir={isRtl ? "rtl" : "ltr"}
                     >

@@ -8,18 +8,30 @@ export async function generateMetadata(
     const params = await props.params;
     const locale = params.locale;
 
-    if (locale === "ar") {
-        return {
-            title: "خطوط تعبئة وفرز الفاكهة الطازجة | حلول التوريد الصناعية المعتمدة",
-            description: "خطوط معالجة صناعية متطورة للفواكه والخضروات. طاقة إنتاجية 50,000 وحدة/ساعة، مكونات شنايدر العالمية، وفولاذ 304. حلول مخصصة للتصدير العالمي.",
-            keywords: ["خط معالجة أفوكادو", "ماكينات فرز فاكهة", "معدات تعبئة وتغليف", "فرز وزني آلي", "توريد مصانع الصين", "تصدير خضروات طازجة"],
-        };
-    }
-
+    const BASE = 'https://www.darchangglobal.com'
+    const isAr = locale === "ar"
+    const title = isAr
+        ? "خطوط تعبئة وفرز الفاكهة الطازجة | حلول التوريد الصناعية المعتمدة"
+        : "Industrial Fruit Sorting Lines | Dar Chang Sourcing"
+    const description = isAr
+        ? "خطوط معالجة صناعية متطورة للفواكه والخضروات. طاقة إنتاجية 50,000 وحدة/ساعة، مكونات شنايدر العالمية، وفولاذ 304. حلول مخصصة للتصدير العالمي."
+        : "High-efficiency automated grading and packaging. Up to 50,000 units/hour, Schneider components, and Food-grade 304 SS. Global export standards."
     return {
-        title: "Industrial Fruit Sorting Lines | Dar Chang Sourcing",
-        description: "High-efficiency automated grading and packaging. Up to 50,000 units/hour, Schneider components, and Food-grade 304 SS. Global export standards.",
-        keywords: ["Avocado processing line", "fruit sorting machinery", "automated grading", "food-grade packaging", "China sourcing", "fresh produce export packaging"],
+        title,
+        description,
+        keywords: isAr
+            ? ["خط معالجة أفوكادو", "ماكينات فرز فاكهة", "معدات تعبئة وتغليف", "فرز وزني آلي", "توريد مصانع الصين", "تصدير خضروات طازجة"]
+            : ["Avocado processing line", "fruit sorting machinery", "automated grading", "food-grade packaging", "China sourcing", "fresh produce export packaging"],
+        openGraph: {
+            title,
+            description,
+            url: `${BASE}/${isAr ? 'ar' : 'en'}/industrial-fruit-sorting-lines`,
+            siteName: isAr ? 'دار تشانغ العالمية' : 'Dar Chang Global',
+            locale: isAr ? 'ar_SA' : 'en_US',
+            type: 'website',
+            images: [{ url: `${BASE}/hero-poster.png`, width: 1200, height: 630, alt: isAr ? 'خطوط فرز الفاكهة — دار تشانغ' : 'Fruit Sorting Lines — Dar Chang' }],
+        },
+        twitter: { card: 'summary_large_image' as const, title, images: [`${BASE}/hero-poster.png`] },
     };
 }
 
@@ -294,7 +306,7 @@ export default async function IndustrialFruitSortingLinesPage(props: { params: P
 
                 <div className="mt-16 flex justify-center">
                     <Link
-                        href="/quote"
+                        href="/quote?type=production_line"
                         className="bg-accent-gold text-primary-navy px-10 py-5 rounded-full font-bold text-lg hover:bg-white shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1"
                         dir={isRtl ? "rtl" : "ltr"}
                     >

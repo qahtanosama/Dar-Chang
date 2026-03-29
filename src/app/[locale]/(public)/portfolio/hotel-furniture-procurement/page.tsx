@@ -132,7 +132,7 @@ export default function FFEPage() {
                         <div className="mt-16 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
                             <p className="text-text-main font-semibold">جاهز لبدء تجهيز مشروعك الفندقي؟</p>
                             <Link
-                                href="/quote"
+                                href="/quote?type=hotel"
                                 className="btn-primary"
                             >
                                 طلب تسعير المشروع
@@ -235,7 +235,7 @@ export default function FFEPage() {
                         <div className="mt-16 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
                             <p className="text-text-main font-semibold">Ready to equip your hospitality project?</p>
                             <Link
-                                href="/quote"
+                                href="/quote?type=hotel"
                                 className="btn-primary"
                             >
                                 Request a Project Quote

@@ -16,7 +16,7 @@ export async function generateMetadata(
       openGraph: {
         title: "من نحن | دار تشانغ",
         description: "250+ مصنع معتمد، حضور ميداني، وقدرات تصدير متحققة.",
-        url: "https://www.darchang.com/ar/about",
+        url: "https://www.darchangglobal.com/ar/about",
         siteName: "Dar Chang | دار تشانغ",
         locale: "ar_AE",
         type: "website",
@@ -32,7 +32,7 @@ export async function generateMetadata(
     openGraph: {
       title: "About Us | Dar Chang",
       description: "250+ audited factories, on-the-ground field teams, and $15M+ verified export volume.",
-      url: "https://www.darchang.com/en/about",
+      url: "https://www.darchangglobal.com/en/about",
       siteName: "Dar Chang | دار تشانغ",
       locale: "en_US",
       type: "website",

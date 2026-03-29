@@ -9,11 +9,24 @@ export async function generateMetadata(
     const locale = (await props.params).locale;
     const isAr = locale === 'ar';
 
+    const BASE = 'https://www.darchangglobal.com'
+    const title = isAr ? "الأسئلة الشائعة | دار تشانغ للاستشارات" : "FAQ | Dar Chang Consulting"
+    const description = isAr
+        ? "إجابات على الأسئلة المتكررة حول التوريد من الصين، فحص الجودة، وحماية الملكية الفكرية."
+        : "Frequently asked questions about China sourcing, quality inspection, and IP protection."
     return {
-        title: isAr ? "الأسئلة الشائعة | دار تشانغ للاستشارات" : "FAQ | Dar Chang Consulting",
-        description: isAr
-            ? "إجابات على الأسئلة المتكررة حول التوريد من الصين، فحص الجودة، وحماية الملكية الفكرية."
-            : "Frequently asked questions about China sourcing, quality inspection, and IP protection.",
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            url: `${BASE}/${isAr ? 'ar' : 'en'}/faq`,
+            siteName: isAr ? 'دار تشانغ العالمية' : 'Dar Chang Global',
+            locale: isAr ? 'ar_SA' : 'en_US',
+            type: 'website',
+            images: [{ url: `${BASE}/hero-poster.png`, width: 1200, height: 630, alt: isAr ? 'دار تشانغ' : 'Dar Chang' }],
+        },
+        twitter: { card: 'summary_large_image' as const, title, images: [`${BASE}/hero-poster.png`] },
     };
 }
 
